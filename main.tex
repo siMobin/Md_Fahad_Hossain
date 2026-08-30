@@ -1,0 +1,89 @@
+\documentclass[10pt,a4paper,ragged2e,withhyper,normalphoto]{files/altacv}
+% Change the page layout if you need to
+\geometry{left=1.25cm,right=1.25cm,top=1.5cm,bottom=1.5cm,columnsep=1.25cm}
+\usepackage{paracol}
+\usepackage{marvosym}
+\usepackage{booktabs}
+\usepackage[backend=biber,style=ieee,sorting=ydnt,defernumbers=true]{biblatex}
+% Font selection for pdflatex
+\usepackage[rm]{roboto}
+\usepackage[defaultsans]{lato}
+% Start Hyphenation Rules
+% -----------------------------------------------------------------------------
+% Line Breaking & Hyphenation
+%
+% These settings reduce automatic word hyphenation while keeping text within
+% the page margins.
+%
+% \hyphenpenalty=10000
+%   Prevents TeX from automatically splitting words (e.g., "organi-zational").
+%   0 → Hyphenation is allowed freely.
+%   50 → Default (approximately).
+%   1000 → Avoid hyphenation when possible.
+%   10000 → Never hyphenate automatically.
+%
+% \exhyphenpenalty=10000
+%   Prevents line breaks at explicit hyphens in words such as
+%   "state-of-the-art".
+%
+% \emergencystretch=3em
+%   Gives TeX additional flexibility to stretch inter-word spaces when
+%   necessary. This helps move an entire word to the next line instead of
+%   hyphenating it, while reducing overfull lines.
+%
+% Higher values reduce hyphenation but may produce slightly wider spaces
+% between words in difficult paragraphs.
+% -----------------------------------------------------------------------------
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\emergencystretch=1em
+% End of Hyphenation Rules
+\renewcommand{\familydefault}{\sfdefault}
+
+% Indigo theme colors
+\definecolor{primary}{RGB}{63,81,181}
+\definecolor{secondary}{RGB}{50,50,50}
+\colorlet{name}{black}
+\colorlet{tagline}{primary}
+\colorlet{heading}{primary}
+\colorlet{headingrule}{primary}
+\colorlet{subheading}{secondary}
+\colorlet{accent}{primary}
+\colorlet{emphasis}{secondary}
+\colorlet{body}{secondary}
+\definecolor{subtle}{RGB}{100,100,100}
+
+% Font and formatting settings
+\renewcommand{\namefont}{\Large\rmfamily\bfseries}
+\renewcommand{\personalinfofont}{\footnotesize}
+\renewcommand{\cvsectionfont}{\large\rmfamily\bfseries}
+\renewcommand{\cvsubsectionfont}{\large\bfseries}
+
+% Section formatting
+% -----------------------------------------------------------------------------
+% It reduces the height of the underline
+% of the section title
+%
+% Default: 2pt
+% -----------------------------------------------------------------------------
+\let\oldcvsection\cvsection
+\renewcommand{\cvsection}[2][]{%
+\nointerlineskip\bigskip%
+\ifstrequal{#1}{}{}{\marginpar{\vspace*{\dimexpr1pt-\baselineskip}\raggedright\input{#1}}}%
+{\color{heading}\cvsectionfont\MakeUppercase{#2}}\\[-1ex]%
+{\color{headingrule}\rule{\linewidth}{0.5mm}\par}\medskip
+}
+% End of section formatting
+
+\begin{document}
+
+\input{sections/personal}
+
+\input{sections/career_objective}
+
+\input{sections/experience}
+\input{sections/education}
+\input{sections/skills}
+\input{sections/personal_details}
+
+\end{document}

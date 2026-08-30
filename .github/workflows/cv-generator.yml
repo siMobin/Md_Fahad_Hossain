@@ -1,0 +1,49 @@
+name: Build CV From Source
+
+on:
+  push:
+    branches:
+      - main
+    # paths:
+    #   - "main.tex"
+    #   - "sections/**"
+    #   - "files/**"
+    #   - "**/cv-generator.yml"
+  workflow_dispatch:
+
+# Cancel any in-progress runs of this workflow when a new commit is pushed to the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Build CV PDF
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: main.tex
+          latexmk_use_xelatex: true
+
+      - name: Organize PDF
+        run: |
+          mkdir -p pdf
+          cp main.pdf pdf/${{ github.event.repository.name }}_$(date -u +%Y%m%d).pdf
+          rm -f *.aux *.log *.out *.run.xml *.bbl *.bcf *.blg *.fdb_latexmk *.fls *.synctex.gz pdfa.xmpi
+
+      - name: Deploy PDF to pdf branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./pdf
+          publish_branch: pdf
+          force_orphan: true
+          commit_message: "chore(cv): update $(date -u +%Y%m%d)"
