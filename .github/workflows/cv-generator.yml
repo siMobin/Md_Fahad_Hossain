@@ -47,7 +47,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./pdf
           publish_branch: pdf
-          force_orphan: true
           commit_message: "chore(cv): update $(date -u +%Y%m%d)"
           commit_user_name: github-actions[bot]
           commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
