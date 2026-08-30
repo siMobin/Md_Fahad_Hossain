@@ -40,8 +40,20 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+          # Keep the built PDF aside, then switch to the pdf branch so we
+          # commit on top of its current history (fast-forward, no force).
+          cp main.pdf ./_cv_main.pdf
+
+          git fetch origin pdf 2>/dev/null || true
+          if git show-ref --verify --quiet refs/remotes/origin/pdf; then
+            git checkout -B pdf origin/pdf
+          else
+            git checkout --orphan pdf
+            git rm -rf --quiet . 2>/dev/null || true
+          fi
+
           mkdir -p pdf
-          cp main.pdf pdf/${{ github.event.repository.name }}_$(date -u +%Y%m%d).pdf
+          mv ./_cv_main.pdf pdf/${{ github.event.repository.name }}_$(date -u +%Y%m%d).pdf
 
           git add pdf/
 
@@ -51,4 +63,4 @@ jobs:
           fi
 
           git commit -m "chore(cv): (update=$(date -u +%Y%m%d))"
-          git push origin HEAD:pdf
+          git push origin pdf
